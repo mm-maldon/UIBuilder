@@ -1,5 +1,5 @@
 # from genome import ChildGenome
-from interface_class import UI_Grid
+from interface import UI_Grid
 
 # new_child = ChildGenome()
 # print(new_child)
