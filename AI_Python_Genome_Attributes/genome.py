@@ -23,6 +23,7 @@ class ChildGenome:
         self.assets = dict()  # This will hold the assets and their heirarchal value
         self.assets_len = 0  # A variable to hold the number of assets, just to avoid using extra computation time
         self.gene_level = 0  #  The current childs genetic value, the value in which to select valid offspring
+        self.template = list()  # this child's current grid
 
     """
     Purely for debuging purposes, just to make sure we have our assets loaded properly
