@@ -11,21 +11,25 @@ height = 9
 
 class UI_Grid:
     def __init__(self):
-        self.genes = ChildGenome()
-
-        self.grid = list()
-        for _ in range(height):
-            row = list()
-            for _ in range(width):
-                row.append("-")
-            self.grid.append(row)
-
-        self.children = set()
+        self.children = list()
+        for _ in range(10):
+            self.children.append(ChildGenome())
 
     def __str__(self):
-        for row in self.grid:
-            print("\n", row)
-        return "\n"
+        for child in self.children:
+            print(child)
+        return ""
 
-    def generate_children(self):
-        pass
+    def load_assets(self, tmp_list):
+        for child in self.children:
+            child.load_traits(tmp_list)
+            child.mutate()
+
+    # Debugging Functions ---------------------------------------------------
+
+    def print_child_assets(self):
+        curr_ind = 0
+        for child in self.children:
+            print("Child ", curr_ind + 1)
+            child.print_assets()
+            curr_ind += 1

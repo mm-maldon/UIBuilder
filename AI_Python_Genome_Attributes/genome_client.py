@@ -1,10 +1,8 @@
 # from genome import ChildGenome
 from interface import UI_Grid
 
-# new_child = ChildGenome()
-# print(new_child)
-# new_child.load_traits()
-# print(new_child)
+UI = UI_Grid()
+# print(UI)
+UI.load_assets(["a", "b", "c", "d", "e"])
 
-UI_01 = UI_Grid()
-print(UI_01)
+UI.print_child_assets()
