@@ -9,5 +9,10 @@ Meant as a class, representing the genome for each individual UI.
 
 # genome_client.py
 Meant to be where we actually create and alter the child genome objects.
+
 Currently used for debugging, works as intended, or more for what I intended.
 
+# interface_class.py
+The class, the object that acutally builds the UI and creates offspring.
+
+Still debating if this should a class or series of functions.
