@@ -17,6 +17,25 @@ Valid assets the user can choose/input:
 
 import random
 
+all_assets = set(
+    [
+        "C",  # Compass
+        "HB",  # Health Bar
+        "WS",  # Weapon Sharpness
+        "WL",  # Weapom Load
+        "EHB",  # Enemy Health Bar
+        "PIP_02",  # Palico Item Pickup
+        "MM",  # Mini Map
+        "LOT",  # Lock-On Toggle
+        "CR",  # Combo Reference
+        "MO",  # Mission Objective
+        "PIP_01",  # Player Item Pickup
+        "QI",  # Quick Inventory
+        "FA",  # Fling Ammo
+        "-",  # Empty Space
+    ]
+)
+
 width = 16
 height = 9
 
@@ -24,7 +43,7 @@ height = 9
 class ChildGenome:
     def __init__(self):
         self.assets = dict()  # This will hold the assets and their heirarchal value
-        self.gene_level = 0  #  The current childs genetic value, the value in which to select valid offspring
+        self.fitness = 0  #  The current childs genetic value, the value in which to select valid offspring
         self.assets_len = 0
         self.parents = tuple()
 
@@ -59,20 +78,59 @@ class ChildGenome:
 
     """
     This fucntion is only meant to change the values of the assests
+    Or, to add a new asset with a value of 0.1 to the dictionary
+    The purpose is to to give the user a possibilty that they might not have even thought about
     """
 
     def mutate(self):
-        if len(self.parents) != 2:
+        coinFlip = random.random()
+
+        if coinFlip <= 0.5:
             for item, val in self.assets.items():
                 rand_val = random.randint(1, self.assets_len)
                 self.assets[item] = round((val * rand_val), 2)
         else:
-            parent_A = self.parents[0].get_assets()
-            parent_B = self.parents[1].get_assets()
+            currInd = 0
+            tmpBool = True
+            while (currInd < len(all_assets)) and (tmpBool):
+                newItem = all_assets[currInd]
+                if newItem not in self.assets.keys():
+                    self.assets[newItem] = 0.1
+                    tmpBool = False
+                currInd += 1
 
-            for item, value_A in parent_A.items():
-                value_B = parent_B[item]
-                self.assets[item] = round(((value_A + value_B) / 2), 2)
+    """
+    This is meant to actually produce a new dictionary of assets depedning on the parents
+    """
+
+    def inherit_fcn(self):
+        parentA = self.parents[0].get_assets()
+        assetsA = parentA.keys()
+        parentB = self.parents[1].get_assets()
+        assetsB = parentB.keys()
+        mutualTraits = set()
+
+        # We iterate through both parents assets individually to find any differences
+        # If one parent has a trait that other doesn't, then there's a 25% chance ...
+        # ... of the child inheriting that trait and half the value
+        for itemA in assetsA:
+            chanceA = random.random()
+            if (itemA not in assetsB) and (chanceA <= 0.25):
+                self[itemA] = round(((parentA[itemA]) / 2), 2)
+            else:
+                mutualTraits.add(itemA)
+
+        for itemB in assetsB:
+            chanceB = random.random()
+            if (itemB not in assetsA) and (chanceB <= 0.25):
+                self[itemB] = round(((parentB[itemB]) / 2), 2)
+            else:
+                mutualTraits.add(itemB)
+
+        for itemM in mutualTraits:
+            valA = parentA[itemM]
+            valB = parentB[itemM]
+            self.assets[itemM] = round(((valA + valB) / 2), 2)
 
     # Access Functions ------------------------------------------------------
 
