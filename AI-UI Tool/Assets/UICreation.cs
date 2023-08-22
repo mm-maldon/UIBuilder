@@ -19,7 +19,9 @@ public class UICreation : MonoBehaviour
         if(Input.GetMouseButton(0)){
             
             Vector3 mousePos = Input.mousePosition;
-            makeHealthBar(mousePos);
+            mousePos.z = 10;
+            Vector3 objectPos = Camera.main.ScreenToWorldPoint(mousePos);
+            makeHealthBar(objectPos);
             
         }
     }
