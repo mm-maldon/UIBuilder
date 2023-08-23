@@ -17,24 +17,22 @@ Valid assets the user can choose/input:
 
 import random
 
-all_assets = set(
-    [
-        "C",  # Compass
-        "HB",  # Health Bar
-        "WS",  # Weapon Sharpness
-        "WL",  # Weapom Load
-        "EHB",  # Enemy Health Bar
-        "PIP_02",  # Palico Item Pickup
-        "MM",  # Mini Map
-        "LOT",  # Lock-On Toggle
-        "CR",  # Combo Reference
-        "MO",  # Mission Objective
-        "PIP_01",  # Player Item Pickup
-        "QI",  # Quick Inventory
-        "FA",  # Fling Ammo
-        "-",  # Empty Space
-    ]
-)
+all_assets = [
+    "C",  # Compass
+    "HB",  # Health Bar
+    "WS",  # Weapon Sharpness
+    "WL",  # Weapom Load
+    "EHB",  # Enemy Health Bar
+    "PIP_02",  # Palico Item Pickup
+    "MM",  # Mini Map
+    "LOT",  # Lock-On Toggle
+    "CR",  # Combo Reference
+    "MO",  # Mission Objective
+    "PIP_01",  # Player Item Pickup
+    "QI",  # Quick Inventory
+    "FA",  # Fling Ammo
+    "-",  # Empty Space
+]
 
 width = 16
 height = 9
@@ -92,14 +90,16 @@ class ChildGenome:
                 rand_val = random.randint(1, self.assets_len)
                 self.assets[item] = round((val * rand_val), 2)
         else:
-            currInd = 0
+            # currInd = 0
             tmpBool = True
-            while (currInd < len(all_assets)) and (tmpBool):
-                newItem = all_assets[currInd]
+            # while (currInd < len(all_assets)) and (tmpBool):
+            while tmpBool:
+                # newItem = all_assets[currInd]
+                newItem = random.choice(all_assets)
                 if newItem not in self.assets.keys():
                     self.assets[newItem] = 0.1
                     tmpBool = False
-                currInd += 1
+                # currInd += 1
 
     """
     This is meant to actually produce a new dictionary of assets depedning on the parents
