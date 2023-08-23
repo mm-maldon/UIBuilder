@@ -63,6 +63,8 @@ class ChildGenome:
             print("\n", row)
         return ""
 
+    # Generate Functions-----------------------------------------------------
+
     """
     This function takes in user inputs, the assets the user want's specifically.
     Load those assets into the 'assets' dictionary, and give those assets a heirarchy value
@@ -82,7 +84,7 @@ class ChildGenome:
     The purpose is to to give the user a possibilty that they might not have even thought about
     """
 
-    def mutate(self):
+    def mutate_assets(self):
         coinFlip = random.random()
 
         if coinFlip <= 0.5:
@@ -103,7 +105,7 @@ class ChildGenome:
     This is meant to actually produce a new dictionary of assets depedning on the parents
     """
 
-    def inherit_fcn(self):
+    def inherit_assets(self):
         parentA = self.parents[0].get_assets()
         assetsA = parentA.keys()
         parentB = self.parents[1].get_assets()
@@ -132,8 +134,6 @@ class ChildGenome:
             valB = parentB[itemM]
             self.assets[itemM] = round(((valA + valB) / 2), 2)
 
-    # Access Functions ------------------------------------------------------
-
     """
     Literally just loads parents into the new child
     """
@@ -141,12 +141,21 @@ class ChildGenome:
     def load_parents(self, new_parents):
         self.parents = new_parents
 
+    # Access Functions ------------------------------------------------------
+
     """
     An access function to get the parents assets dicitonary with their unique values
     """
 
     def get_assets(self):
         return self.assets
+
+    """
+    An access function to get the child'scurrent fitness level
+    """
+
+    def get_fitness(self):
+        return self.fitness
 
     """
     A helper function that can be called to return the asset with the highest value
@@ -226,6 +235,14 @@ class ChildGenome:
                     break
                 break
 
+    # Grid Functions --------------------------------------------------------
+
+    def produce_grid(self):
+        pass
+
+    def merge_grids(self):
+        pass
+
     # Debugging Functions ---------------------------------------------------
 
     """
@@ -237,3 +254,45 @@ class ChildGenome:
         for item, value in self.assets.items():
             print(item, " : ", value)
         print("}")
+
+    """
+    Meant to check for duplicate assets in a certain quadrant
+    """
+
+    def check_quadrant(self, item, quad):
+        yBound = range(0, 0)
+        xBound = range(0, 0)
+
+        if quad == 1:
+            yBound = range(0, int(height / 2))
+            xBound = range(0, int(width / 2))
+        elif quad == 2:
+            yBound = range(0, int(height / 2))
+            xBound = range(int(width / 2), width)
+        elif quad == 3:
+            yBound = range(int(height / 2), height)
+            xBound = range(int(width / 2), width)
+        elif quad == 4:
+            yBound = range(int(height / 2), height)
+            xBound = range(0, int(width / 2))
+        else:
+            return False
+
+        for Y in yBound:
+            for X in xBound:
+                if item == self.grid[Y][X]:
+                    return True
+
+        return False
+
+    """
+    Checks the child's grid for duplicate assets in the entire grid
+    """
+
+    def check_grid(self, item):
+        for Y in self.grid:
+            for X in Y:
+                if X == item:
+                    return True
+
+        return False

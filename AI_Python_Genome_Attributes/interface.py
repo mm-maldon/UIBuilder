@@ -70,7 +70,7 @@ class UI_Grid:
                     if (par_A, par_B) not in past_couples:
                         new_child = ChildGenome()
                         new_child.load_parents((par_A, par_B))
-                        new_child.inherit_fcn()
+                        new_child.inherit_assets()
                         new_children.append(new_child)
                         past_couples.add((par_A, par_B))
                         past_couples.add((par_B, par_A))
@@ -93,7 +93,11 @@ class UI_Grid:
         for child in self.children:
             mutateChance = random.random()
             if mutateChance <= 0.10:
-                child.mutate()
+                child.mutate_assets()
+
+    # Fitness Functions------------------------------------------------------
+    def calc_fitness(self):
+        pass
 
     # Debugging Functions ---------------------------------------------------
 
