@@ -1,6 +1,6 @@
 # genome.py
 Meant as a class, representing the genome for each individual UI.
-- __init(self)
+- __init__(self)
     - self.assets : a dictionary holding assets and numerical values
     - self.fitness : the child's numerical fitness level
     - self.assets_len : literally just the number of assets 
