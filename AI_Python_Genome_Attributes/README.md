@@ -38,7 +38,7 @@ Meant as a class, representing the genome for each individual UI.
 - lower_right(self, amount)
     - amount : the number of objects specified to go in the lower right quadrant
 - lower_left(self, amount)
-    -amount : the number of objects specified to go in the lower left quadrant
+    - amount : the number of objects specified to go in the lower left quadrant
 ## Grid Functions
 - produce_grid(self)
     - More for the initialziation, but it makes basic grids for the initial set of children
