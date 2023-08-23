@@ -4,6 +4,7 @@ Still debating if this file should be a class or more jsut a series of functions
 """
 
 from genome import ChildGenome
+import random
 
 width = 16
 height = 9
@@ -69,7 +70,7 @@ class UI_Grid:
                     if (par_A, par_B) not in past_couples:
                         new_child = ChildGenome()
                         new_child.load_parents((par_A, par_B))
-                        new_child.mutate()
+                        new_child.inherit_assets()
                         new_children.append(new_child)
                         past_couples.add((par_A, par_B))
                         past_couples.add((par_B, par_A))
@@ -85,12 +86,19 @@ class UI_Grid:
             child.load_traits(tmp_list)
 
     """
-    Alters the children's asset's value
+    There's a 10% chance that alters a child's asset's value
     """
 
     def mutate_children(self):
         for child in self.children:
-            child.mutate()
+            mutateChance = round(random.random(), 2)
+            # print("Percentage: ", mutateChance)
+            if mutateChance <= 0.10:
+                child.mutate_assets()
+
+    # Fitness Functions------------------------------------------------------
+    def calc_fitness(self):
+        pass
 
     # Debugging Functions ---------------------------------------------------
 

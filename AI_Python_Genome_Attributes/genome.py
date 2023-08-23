@@ -17,6 +17,23 @@ Valid assets the user can choose/input:
 
 import random
 
+all_assets = [
+    "C",  # Compass
+    "HB",  # Health Bar
+    "WS",  # Weapon Sharpness
+    "WL",  # Weapom Load
+    "EHB",  # Enemy Health Bar
+    "PIP_02",  # Palico Item Pickup
+    "MM",  # Mini Map
+    "LOT",  # Lock-On Toggle
+    "CR",  # Combo Reference
+    "MO",  # Mission Objective
+    "PIP_01",  # Player Item Pickup
+    "QI",  # Quick Inventory
+    "FA",  # Fling Ammo
+    "-",  # Empty Space
+]
+
 width = 16
 height = 9
 
@@ -24,7 +41,7 @@ height = 9
 class ChildGenome:
     def __init__(self):
         self.assets = dict()  # This will hold the assets and their heirarchal value
-        self.gene_level = 0  #  The current childs genetic value, the value in which to select valid offspring
+        self.fitness = 0  #  The current childs genetic value, the value in which to select valid offspring
         self.assets_len = 0
         self.parents = tuple()
 
@@ -44,6 +61,8 @@ class ChildGenome:
             print("\n", row)
         return ""
 
+    # Generate Functions-----------------------------------------------------
+
     """
     This function takes in user inputs, the assets the user want's specifically.
     Load those assets into the 'assets' dictionary, and give those assets a heirarchy value
@@ -59,22 +78,63 @@ class ChildGenome:
 
     """
     This fucntion is only meant to change the values of the assests
+    Or, to add a new asset with a value of 0.1 to the dictionary
+    The purpose is to to give the user a possibilty that they might not have even thought about
     """
 
-    def mutate(self):
-        if len(self.parents) != 2:
+    def mutate_assets(self):
+        coinFlip = random.random()
+
+        if coinFlip <= 0.5:
             for item, val in self.assets.items():
                 rand_val = random.randint(1, self.assets_len)
                 self.assets[item] = round((val * rand_val), 2)
         else:
-            parent_A = self.parents[0].get_assets()
-            parent_B = self.parents[1].get_assets()
+            # currInd = 0
+            tmpBool = True
+            # while (currInd < len(all_assets)) and (tmpBool):
+            while tmpBool:
+                # newItem = all_assets[currInd]
+                newItem = random.choice(all_assets)
+                if newItem not in self.assets.keys():
+                    self.assets[newItem] = 0.1
+                    tmpBool = False
+                # currInd += 1
 
-            for item, value_A in parent_A.items():
-                value_B = parent_B[item]
-                self.assets[item] = round(((value_A + value_B) / 2), 2)
+    """
+    This is meant to actually produce a new dictionary of assets depedning on the parents
+    """
 
-    # Access Functions ------------------------------------------------------
+    def inherit_assets(self):
+        parentA = self.parents[0].get_assets()
+        assetsA = parentA.keys()
+        parentB = self.parents[1].get_assets()
+        assetsB = parentB.keys()
+        mutualTraits = set()
+
+        # We iterate through both parents assets individually to find any differences
+        # If one parent has a trait that other doesn't, then there's a 25% chance ...
+        # ... of the child inheriting that trait and half the value
+        for itemA in assetsA:
+            chanceA = random.random()
+            if itemA not in assetsB:
+                if chanceA <= 0.25:
+                    self.assets[itemA] = round(((parentA[itemA]) / 2), 2)
+            else:
+                mutualTraits.add(itemA)
+
+        for itemB in assetsB:
+            chanceB = random.random()
+            if itemB not in assetsA:
+                if chanceB <= 0.25:
+                    self.assets[itemB] = round(((parentB[itemB]) / 2), 2)
+            else:
+                mutualTraits.add(itemB)
+
+        for itemM in mutualTraits:
+            valA = parentA[itemM]
+            valB = parentB[itemM]
+            self.assets[itemM] = round(((valA + valB) / 2), 2)
 
     """
     Literally just loads parents into the new child
@@ -83,12 +143,21 @@ class ChildGenome:
     def load_parents(self, new_parents):
         self.parents = new_parents
 
+    # Access Functions ------------------------------------------------------
+
     """
     An access function to get the parents assets dicitonary with their unique values
     """
 
     def get_assets(self):
         return self.assets
+
+    """
+    An access function to get the child'scurrent fitness level
+    """
+
+    def get_fitness(self):
+        return self.fitness
 
     """
     A helper function that can be called to return the asset with the highest value
@@ -168,6 +237,14 @@ class ChildGenome:
                     break
                 break
 
+    # Grid Functions --------------------------------------------------------
+
+    def produce_grid(self):
+        pass
+
+    def merge_grids(self):
+        pass
+
     # Debugging Functions ---------------------------------------------------
 
     """
@@ -179,3 +256,45 @@ class ChildGenome:
         for item, value in self.assets.items():
             print(item, " : ", value)
         print("}")
+
+    """
+    Meant to check for duplicate assets in a certain quadrant
+    """
+
+    def check_quadrant(self, item, quad):
+        yBound = range(0, 0)
+        xBound = range(0, 0)
+
+        if quad == 1:
+            yBound = range(0, int(height / 2))
+            xBound = range(0, int(width / 2))
+        elif quad == 2:
+            yBound = range(0, int(height / 2))
+            xBound = range(int(width / 2), width)
+        elif quad == 3:
+            yBound = range(int(height / 2), height)
+            xBound = range(int(width / 2), width)
+        elif quad == 4:
+            yBound = range(int(height / 2), height)
+            xBound = range(0, int(width / 2))
+        else:
+            return False
+
+        for Y in yBound:
+            for X in xBound:
+                if item == self.grid[Y][X]:
+                    return True
+
+        return False
+
+    """
+    Checks the child's grid for duplicate assets in the entire grid
+    """
+
+    def check_grid(self, item):
+        for Y in self.grid:
+            for X in Y:
+                if X == item:
+                    return True
+
+        return False
