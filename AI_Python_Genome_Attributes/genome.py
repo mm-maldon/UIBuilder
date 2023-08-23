@@ -117,15 +117,17 @@ class ChildGenome:
         # ... of the child inheriting that trait and half the value
         for itemA in assetsA:
             chanceA = random.random()
-            if (itemA not in assetsB) and (chanceA <= 0.25):
-                self[itemA] = round(((parentA[itemA]) / 2), 2)
+            if itemA not in assetsB:
+                if chanceA <= 0.25:
+                    self.assets[itemA] = round(((parentA[itemA]) / 2), 2)
             else:
                 mutualTraits.add(itemA)
 
         for itemB in assetsB:
             chanceB = random.random()
-            if (itemB not in assetsA) and (chanceB <= 0.25):
-                self[itemB] = round(((parentB[itemB]) / 2), 2)
+            if itemB not in assetsA:
+                if chanceB <= 0.25:
+                    self.assets[itemB] = round(((parentB[itemB]) / 2), 2)
             else:
                 mutualTraits.add(itemB)
 
