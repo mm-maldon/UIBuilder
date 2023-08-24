@@ -177,6 +177,19 @@ class ChildGenome:
         else:
             return False
 
+    def curr_max(self):
+        max_val = 0 - 1
+        max_item = False
+
+        for item, value in self.assets.items():
+            tmpBool = self.check_grid(item)
+            if not tmpBool:
+                if value > max_val:
+                    max_item = item
+                    max_val = value
+
+        return max_item
+
     # Template Functions ----------------------------------------------------
 
     """
@@ -186,54 +199,60 @@ class ChildGenome:
     def upper_left(self, amount):
         for _ in range(amount):
             placeBool = True
-            while placeBool == True:
-                rand = random.random()
-                Y = random.randint(0, int(height / 2))
-                X = random.randint(0, int(width / 2))
-                if self.grid[Y][X] == "-":
-                    item = self.max_asset()
-                    if (item != False) and (round(rand, 2) <= 0.75):
-                        self.grid[Y][X] = item
-                        placeBool = False
+            item = self.curr_max()
+            # print("item up: ", item)
+            if item != False:
+                while placeBool == True:
+                    rand = random.random()
+                    Y = random.randint(0, int(height / 2))
+                    X = random.randint(0, int(width / 2))
+                    if self.grid[Y][X] == "-":
+                        if round(rand, 2) <= 0.75:
+                            self.grid[Y][X] = item
+                            placeBool = False
 
     def upper_right(self, amount):
         for _ in range(amount):
             placeBool = True
-            while placeBool == True:
-                rand = random.random()
-                Y = random.randint(0, int(height / 2))
-                X = random.randint(int(width / 2), (width - 1))
-                if self.grid[Y][X] == "-":
-                    item = self.max_asset()
-                    if (item != False) and (round(rand, 2) <= 0.75):
-                        self.grid[Y][X] = item
-                        placeBool = False
+            item = self.curr_max()
+            if item != False:
+                while placeBool == True:
+                    rand = random.random()
+                    Y = random.randint(0, int(height / 2))
+                    X = random.randint(int(width / 2), (width - 1))
+                    if self.grid[Y][X] == "-":
+                        if round(rand, 2) <= 0.75:
+                            self.grid[Y][X] = item
+                            placeBool = False
 
     def lower_right(self, amount):
         for _ in range(amount):
             placeBool = True
-            while placeBool == True:
-                rand = random.random()
-                Y = random.randint(int(height / 2), (height - 1))
-                X = random.randint(int(width / 2), (width - 1))
-                if self.grid[Y][X] == "-":
-                    item = self.max_asset()
-                    if (item != False) and (round(rand, 2) <= 0.75):
-                        self.grid[Y][X] = item
-                        placeBool = False
+            item = self.curr_max()
+            # print("item low: ", item)
+            if item != False:
+                while placeBool == True:
+                    rand = random.random()
+                    Y = random.randint(int(height / 2), (height - 1))
+                    X = random.randint(int(width / 2), (width - 1))
+                    if self.grid[Y][X] == "-":
+                        if round(rand, 2) <= 0.75:
+                            self.grid[Y][X] = item
+                            placeBool = False
 
     def lower_left(self, amount):
         for _ in range(amount):
             placeBool = True
-            while placeBool == True:
-                rand = random.random()
-                Y = random.randint(int(height / 2), (height - 1))
-                X = random.randint(0, int(width / 2))
-                if self.grid[Y][X] == "-":
-                    item = self.max_asset()
-                    if (item != False) and (round(rand, 2) <= 0.75):
-                        self.grid[Y][X] = item
-                        placeBool = False
+            item = self.curr_max()
+            if item != False:
+                while placeBool == True:
+                    rand = random.random()
+                    Y = random.randint(int(height / 2), (height - 1))
+                    X = random.randint(0, int(width / 2))
+                    if self.grid[Y][X] == "-":
+                        if round(rand, 2) <= 0.75:
+                            self.grid[Y][X] = item
+                            placeBool = False
 
     # Grid Functions --------------------------------------------------------
 

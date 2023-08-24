@@ -17,8 +17,11 @@ class UI_Grid:
         self.children_len = 0
 
     def __str__(self):
+        curr_ind = 1
         for child in self.children:
+            print("Child: ", curr_ind)
             print(child)
+            curr_ind += 1
         return ""
 
     # Access Functions ------------------------------------------------------
