@@ -169,7 +169,9 @@ class ChildGenome:
         for item, value in self.assets.items():
             if value > max_value:
                 max_item = item
+                max_value = value
 
+        # print("max val: ", max_value)
         if max_value > (0 - 1):
             return max_item
         else:
@@ -183,17 +185,26 @@ class ChildGenome:
 
     def upper_left(self, amount):
         for _ in range(amount):
-            rand = random.randint(1, 100)
-
-            for Y in range(int(height / 2)):
-                for X in range(int(width / 2)):
-                    if self.grid[Y][X] == "-":
-                        item = self.max_asset()
-                        if (item != False) and (rand < 50):
-                            self.grid[Y][X] = item
+            print("Hello\n")
+            placeBool = True
+            while placeBool == True:
+                # rand = random.randint(1, 100)
+                rand = random.random()
+                for Y in range(int(height / 2)):
+                    for X in range(int(width / 2)):
+                        if self.grid[Y][X] == "-":
+                            item = self.max_asset()
+                            # print("left max: ", item)
+                            if (item != False) and (round(rand, 2) <= 0.50):
+                                self.grid[Y][X] = item
+                                placeBool = False
+                        if placeBool == False:
                             break
+                    if placeBool == False:
+                        break
+                if placeBool == False:
                     break
-                break
+                placeBool = False
 
     def upper_right(self, amount):
         for _ in range(amount):
@@ -211,17 +222,16 @@ class ChildGenome:
 
     def lower_right(self, amount):
         for _ in range(amount):
-            rand = random.randint(1, 100)
-
-            for Y in range(int(height / 2), height):
-                for X in range(int(width / 2), width):
-                    if self.grid[Y][X] == "-":
-                        item = self.max_asset()
-                        if (item != False) and (rand < 50):
-                            self.grid[Y][X] = item
-                            break
-                    break
-                break
+            placeBool = True
+            while placeBool == True:
+                rand = random.random()
+                Y = random.randint(int(height / 2), (height - 1))
+                X = random.randint(int(width / 2), (width - 1))
+                if self.grid[Y][X] == "-":
+                    item = self.max_asset()
+                    if (item != False) and (round(rand, 2) <= 0.75):
+                        self.grid[Y][X] = item
+                        placeBool = False
 
     def lower_left(self, amount):
         for _ in range(amount):
@@ -240,7 +250,9 @@ class ChildGenome:
     # Grid Functions --------------------------------------------------------
 
     def produce_grid(self):
-        pass
+        self.upper_left(2)
+        self.lower_right(2)
+        # pass
 
     def merge_grids(self):
         pass
