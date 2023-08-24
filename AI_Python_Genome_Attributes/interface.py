@@ -96,6 +96,10 @@ class UI_Grid:
             if mutateChance <= 0.10:
                 child.mutate_assets()
 
+    def create_grids(self):
+        for child in self.children:
+            child.produce_grid()
+
     # Fitness Functions------------------------------------------------------
     def calc_fitness(self):
         pass
