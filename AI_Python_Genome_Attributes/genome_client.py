@@ -14,6 +14,7 @@ UI_A.mutate_children()
 
 UI_A.create_grids()
 print(UI_A)
+UI_A.grid_to_txt()
 
 # print("New Children\n")
 # new_generation = UI_A.generate_new_children()

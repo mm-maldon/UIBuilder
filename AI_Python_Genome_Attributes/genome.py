@@ -244,6 +244,17 @@ class ChildGenome:
 
     def merge_grids(self):
         pass
+    
+    """
+    def grid_to_txt(self):
+        my_list = self.explore_grid()
+        with open('gridLayout.txt', 'w') as f:
+            for item in my_list:
+                f.write(item)
+                f.write('\n')
+        pass
+    """
+
 
     # Debugging Functions ---------------------------------------------------
 
@@ -298,3 +309,16 @@ class ChildGenome:
                     return True
 
         return False
+    
+    """
+    Iterates through every point on the grid and returns a list containing each point
+    """
+
+    def explore_grid(self):
+        my_list = list()
+        for Y in self.grid:
+            for X in Y:
+                if X != '-':
+                    my_list.append((X, Y))
+
+        return my_list
