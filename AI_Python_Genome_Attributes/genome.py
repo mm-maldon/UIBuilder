@@ -267,22 +267,12 @@ class ChildGenome:
     # Grid Functions --------------------------------------------------------
 
     def produce_grid(self):
-        # max_range = math.ceil()
-        # quadSet = set()
-        quadList = [1, 2, 3, 4]
-        while (len(quadList) > 0) and (self.grid_len <= self.assets_len):
-            tmpQuad = random.choice(quadList)
-            quadList.remove(tmpQuad)
-            # quadSet.add(tmpQuad)
-            randAmount = random.randint(1, self.assets_len)
-            if tmpQuad == 1:
-                self.upper_left(randAmount)
-            elif tmpQuad == 2:
-                self.upper_right(randAmount)
-            elif tmpQuad == 3:
-                self.lower_right(randAmount)
-            else:
-                self.lower_left(randAmount)
+        while self.grid_len < self.assets_len:
+            amountItems = math.ceil(self.assets_len / 4)
+            self.upper_left(amountItems)
+            self.upper_right(amountItems)
+            self.lower_right(amountItems)
+            self.lower_left(amountItems)
 
     def merge_grids(self):
         pass
