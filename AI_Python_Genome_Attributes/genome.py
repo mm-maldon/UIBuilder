@@ -42,6 +42,9 @@ height = 9
 class ChildGenome:
     def __init__(self):
         self.assets = dict()  # This will hold the assets and their heirarchal value
+        self.asset_locations = (
+            dict()
+        )  # litterally just stores the locatin of each asset
         self.fitness = 0  #  The current childs genetic value, the value in which to select valid offspring
         self.assets_len = 0
         self.grid_len = 0
@@ -166,6 +169,33 @@ class ChildGenome:
         return self.fitness
 
     """
+    Returns the child's current grid
+    """
+
+    def get_grid(self):
+        return self.grid
+
+    def get_parents(self):
+        return self.parents
+
+    def get_item_coord(self, item):
+        # for Y in range(len(self.grid)):
+        #     for X in range(len(Y)):
+        #         if item == self.grid[Y][X]:
+        #             return (Y, X)
+        # return False
+        if self.check_grid(item):
+            return self.asset_locations[item]
+        return False
+
+    def get_item_quad(self, item):
+        quads = [1, 2, 3, 4]
+        for i in quads:
+            if self.check_quadrant(item, i):
+                return i
+        return False
+
+    """
     A helper function that can be called to return the asset with the highest value
     """
 
@@ -215,6 +245,7 @@ class ChildGenome:
                     if self.grid[Y][X] == "-":
                         if round(rand, 2) <= 0.75:
                             self.grid[Y][X] = item
+                            self.asset_locations[item] = (Y, X)
                             self.grid_len += 1
                             placeBool = False
 
@@ -230,6 +261,7 @@ class ChildGenome:
                     if self.grid[Y][X] == "-":
                         if round(rand, 2) <= 0.75:
                             self.grid[Y][X] = item
+                            self.asset_locations[item] = (Y, X)
                             self.grid_len += 1
                             placeBool = False
 
@@ -246,6 +278,7 @@ class ChildGenome:
                     if self.grid[Y][X] == "-":
                         if round(rand, 2) <= 0.75:
                             self.grid[Y][X] = item
+                            self.asset_locations[item] = (Y, X)
                             self.grid_len += 1
                             placeBool = False
 
@@ -261,8 +294,47 @@ class ChildGenome:
                     if self.grid[Y][X] == "-":
                         if round(rand, 2) <= 0.75:
                             self.grid[Y][X] = item
+                            self.asset_locations[item] = (Y, X)
                             self.grid_len += 1
                             placeBool = False
+
+    """
+    This is similar to the above functions, except this is to specifically...
+    ... add an element to a specified quadrant
+    """
+
+    def place_quad(self, quad, item):
+        itemBool = self.check_grid(item)
+        X = 0 - 1
+        Y = 0 - 1
+        if not itemBool:
+            # tmpBool = True
+            # while tmpBool == True:
+            while True:
+                rand = random.random()
+                if quad == 1:
+                    Y = random.randint(0, int(height / 2) - 1)
+                    X = random.randint(0, int(width / 2) - 1)
+                elif quad == 2:
+                    Y = random.randint(0, int(height / 2) - 1)
+                    X = random.randint(int(width / 2), (width - 1))
+                elif quad == 3:
+                    Y = random.randint(int(height / 2), (height - 1))
+                    X = random.randint(int(width / 2), (width - 1))
+                elif quad == 4:
+                    Y = random.randint(int(height / 2), (height - 1))
+                    X = random.randint(0, int(width / 2) - 1)
+                else:
+                    return False
+
+                if self.grid[Y][X] == "-":
+                    if round(rand, 2) <= 0.75:
+                        self.grid[Y][X] = item
+                        self.asset_locations[item] = (Y, X)
+                        self.grid_len += 1
+                        # tmpBool = False
+                        return True
+        return False
 
     # Grid Functions --------------------------------------------------------
 
@@ -292,7 +364,45 @@ class ChildGenome:
                 self.lower_left(amountItems)
                 self.upper_left(amountItems)
 
+    def merge_grid_helper(self, parent, item):
+        coordA = parent.get_item_coord(item)
+        if coordA != False:
+            self.grid[coordA[0]][coordA[1]] = item
+        else:
+            loc = parent.get_item_quad(item)
+            self.place_quad(loc, item)
+
     def merge_grids(self):
+        childAssets = self.get_assets()
+
+        parentA = self.parents[0]
+        assetsA = parentA.get_assets()
+        keysA = assetsA.keys()
+
+        parentB = self.parents[1]
+        assetsB = parentB.get_assets()
+        keysB = assetsB.keys()
+
+        for item in childAssets.keys():
+            itemChance = round(random.random(), 2)
+            if (item in keysA) and (item in keysB):
+                if assetsA[item] > assetsB[item]:
+                    self.merge_grid_helper(parentA, item)
+                elif assetsA[item] < assetsB[item]:
+                    self.merge_grid_helper(parentB, item)
+                else:
+                    if itemChance < 0.50:
+                        self.merge_grid_helper(parentA, item)
+                    else:
+                        self.merge_grid_helper(parentB, item)
+
+            elif item in keysA:
+                self.merge_grid_helper(parentA, item)
+
+            elif item in keysB:
+                self.merge_grid_helper(parentB, item)
+
+    def mutate_grid(self):
         pass
 
     # Debugging Functions ---------------------------------------------------

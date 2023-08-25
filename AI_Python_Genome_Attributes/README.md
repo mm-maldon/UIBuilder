@@ -29,6 +29,8 @@ Meant as a class, representing the genome for each individual UI.
     - Just returns the child's current assets when called
 - get_fitness(self)
     - Just returns the child's current fitness level
+- get_grid(self)
+    - Returns the child's current grid
 - max_asset(self)
     - This function just returns the child's asset with the highest value
 - curr_max(self)
@@ -42,6 +44,10 @@ Meant as a class, representing the genome for each individual UI.
     - amount : the number of objects specified to go in the lower right quadrant
 - lower_left(self, amount)
     - amount : the number of objects specified to go in the lower left quadrant
+- place_quad(self, quad, item)
+    - quad : the quadrant the user wants to place assets into
+    - item : the asset the user wnat to place in the specified quadrant
+    - Places an item in the specified quadrant requested by the user
 ## Grid Functions
 - produce_grid(self)
     - More for the initialziation, but it makes basic grids for the initial set of children

@@ -101,7 +101,10 @@ class UI_Grid:
 
     def create_grids(self):
         for child in self.children:
-            child.produce_grid()
+            if len(child.get_parents()) == 2:
+                child.merge_grids()
+            else:
+                child.produce_grid()
 
     # Fitness Functions------------------------------------------------------
     def calc_fitness(self):
