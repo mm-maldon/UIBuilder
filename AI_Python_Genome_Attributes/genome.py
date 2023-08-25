@@ -269,10 +269,28 @@ class ChildGenome:
     def produce_grid(self):
         while self.grid_len < self.assets_len:
             amountItems = math.ceil(self.assets_len / 4)
-            self.upper_left(amountItems)
-            self.upper_right(amountItems)
-            self.lower_right(amountItems)
-            self.lower_left(amountItems)
+            tmpPercent = random.random()
+
+            if tmpPercent <= 0.25:
+                self.upper_left(amountItems)
+                self.upper_right(amountItems)
+                self.lower_right(amountItems)
+                self.lower_left(amountItems)
+            elif tmpPercent <= 0.50:
+                self.lower_left(amountItems)
+                self.upper_left(amountItems)
+                self.upper_right(amountItems)
+                self.lower_right(amountItems)
+            elif tmpPercent <= 0.75:
+                self.lower_right(amountItems)
+                self.lower_left(amountItems)
+                self.upper_left(amountItems)
+                self.upper_right(amountItems)
+            else:
+                self.upper_right(amountItems)
+                self.lower_right(amountItems)
+                self.lower_left(amountItems)
+                self.upper_left(amountItems)
 
     def merge_grids(self):
         pass
