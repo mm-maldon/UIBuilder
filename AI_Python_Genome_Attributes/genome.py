@@ -16,6 +16,7 @@ Valid assets the user can choose/input:
 """
 
 import random
+import math
 
 all_assets = [
     "C",  # Compass
@@ -43,6 +44,7 @@ class ChildGenome:
         self.assets = dict()  # This will hold the assets and their heirarchal value
         self.fitness = 0  #  The current childs genetic value, the value in which to select valid offspring
         self.assets_len = 0
+        self.grid_len = 0
         self.parents = tuple()
 
         self.grid = list()
@@ -98,6 +100,7 @@ class ChildGenome:
                 newItem = random.choice(all_assets)
                 if newItem not in self.assets.keys():
                     self.assets[newItem] = 0.1
+                    self.assets_len += 1
                     tmpBool = False
                 # currInd += 1
 
@@ -120,6 +123,7 @@ class ChildGenome:
             if itemA not in assetsB:
                 if chanceA <= 0.25:
                     self.assets[itemA] = round(((parentA[itemA]) / 2), 2)
+                    self.assets_len += 1
             else:
                 mutualTraits.add(itemA)
 
@@ -128,6 +132,7 @@ class ChildGenome:
             if itemB not in assetsA:
                 if chanceB <= 0.25:
                     self.assets[itemB] = round(((parentB[itemB]) / 2), 2)
+                    self.assets_len += 1
             else:
                 mutualTraits.add(itemB)
 
@@ -135,6 +140,7 @@ class ChildGenome:
             valA = parentA[itemM]
             valB = parentB[itemM]
             self.assets[itemM] = round(((valA + valB) / 2), 2)
+            self.assets_len += 1
 
     """
     Literally just loads parents into the new child
@@ -204,11 +210,12 @@ class ChildGenome:
             if item != False:
                 while placeBool == True:
                     rand = random.random()
-                    Y = random.randint(0, int(height / 2))
-                    X = random.randint(0, int(width / 2))
+                    Y = random.randint(0, int(height / 2) - 1)
+                    X = random.randint(0, int(width / 2) - 1)
                     if self.grid[Y][X] == "-":
                         if round(rand, 2) <= 0.75:
                             self.grid[Y][X] = item
+                            self.grid_len += 1
                             placeBool = False
 
     def upper_right(self, amount):
@@ -218,11 +225,12 @@ class ChildGenome:
             if item != False:
                 while placeBool == True:
                     rand = random.random()
-                    Y = random.randint(0, int(height / 2))
+                    Y = random.randint(0, int(height / 2) - 1)
                     X = random.randint(int(width / 2), (width - 1))
                     if self.grid[Y][X] == "-":
                         if round(rand, 2) <= 0.75:
                             self.grid[Y][X] = item
+                            self.grid_len += 1
                             placeBool = False
 
     def lower_right(self, amount):
@@ -238,6 +246,7 @@ class ChildGenome:
                     if self.grid[Y][X] == "-":
                         if round(rand, 2) <= 0.75:
                             self.grid[Y][X] = item
+                            self.grid_len += 1
                             placeBool = False
 
     def lower_left(self, amount):
@@ -248,18 +257,32 @@ class ChildGenome:
                 while placeBool == True:
                     rand = random.random()
                     Y = random.randint(int(height / 2), (height - 1))
-                    X = random.randint(0, int(width / 2))
+                    X = random.randint(0, int(width / 2) - 1)
                     if self.grid[Y][X] == "-":
                         if round(rand, 2) <= 0.75:
                             self.grid[Y][X] = item
+                            self.grid_len += 1
                             placeBool = False
 
     # Grid Functions --------------------------------------------------------
 
     def produce_grid(self):
-        self.upper_left(2)
-        self.lower_right(2)
-        # pass
+        # max_range = math.ceil()
+        # quadSet = set()
+        quadList = [1, 2, 3, 4]
+        while (len(quadList) > 0) and (self.grid_len <= self.assets_len):
+            tmpQuad = random.choice(quadList)
+            quadList.remove(tmpQuad)
+            # quadSet.add(tmpQuad)
+            randAmount = random.randint(1, self.assets_len)
+            if tmpQuad == 1:
+                self.upper_left(randAmount)
+            elif tmpQuad == 2:
+                self.upper_right(randAmount)
+            elif tmpQuad == 3:
+                self.lower_right(randAmount)
+            else:
+                self.lower_left(randAmount)
 
     def merge_grids(self):
         pass
