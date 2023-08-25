@@ -17,8 +17,11 @@ class UI_Grid:
         self.children_len = 0
 
     def __str__(self):
+        curr_ind = 1
         for child in self.children:
+            print("Child: ", curr_ind)
             print(child)
+            curr_ind += 1
         return ""
 
     # Access Functions ------------------------------------------------------
@@ -98,7 +101,10 @@ class UI_Grid:
 
     def create_grids(self):
         for child in self.children:
-            child.produce_grid()
+            if len(child.get_parents()) == 2:
+                child.merge_grids()
+            else:
+                child.produce_grid()
 
     def grid_to_txt(self):
         ind = 1
