@@ -368,6 +368,7 @@ class ChildGenome:
         coordA = parent.get_item_coord(item)
         if coordA != False:
             self.grid[coordA[0]][coordA[1]] = item
+            self.asset_locations[item] = coordA
         else:
             loc = parent.get_item_quad(item)
             self.place_quad(loc, item)
@@ -476,9 +477,7 @@ class ChildGenome:
 
     def explore_grid(self):
         my_list = list()
-        for Y in self.grid:
-            for X in Y:
-                if X != '-':
-                    my_list.append((X, Y))
-
+        for asset, value in self.asset_locations.items():
+            flipped = (value[1], value[0])  # changes from (Y, X) to (X, Y)
+            my_list.append((asset, flipped))
         return my_list

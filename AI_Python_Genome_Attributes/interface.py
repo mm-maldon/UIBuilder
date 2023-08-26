@@ -115,9 +115,10 @@ class UI_Grid:
                 my_list = ChildGenome.explore_grid(child)
                 print(my_list)
                 list_string = str(my_list)
-
-                f.write(list_string)
-                f.write('\n')
+                for item in my_list:
+                    f.write(str(item))
+                    f.write('\n')
+                f.close()
             ind += 1
     # Fitness Functions------------------------------------------------------
     def calc_fitness(self):
