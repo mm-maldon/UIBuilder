@@ -388,7 +388,7 @@ class ChildGenome:
     def merge_grid_helper(self, parent, item):
         itemChance = round(random.random(), 2)
 
-        if itemChance < 0.50:
+        if itemChance < 0.75:
             coord = parent.get_item_coord(item)
             self.grid[coord[0]][coord[1]] = item
             self.asset_locations[item] = coord
