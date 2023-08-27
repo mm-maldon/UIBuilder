@@ -433,6 +433,17 @@ class ChildGenome:
 
     def mutate_grid(self):
         pass
+    
+    """
+    def grid_to_txt(self):
+        my_list = self.explore_grid()
+        with open('gridLayout.txt', 'w') as f:
+            for item in my_list:
+                f.write(item)
+                f.write('\n')
+        pass
+    """
+
 
     # Debugging Functions ---------------------------------------------------
 
@@ -498,3 +509,14 @@ class ChildGenome:
                     return True
 
         return False
+    
+    """
+    Iterates through every point on the grid and returns a list containing each point
+    """
+
+    def explore_grid(self):
+        my_list = list()
+        for asset, value in self.asset_locations.items():
+            flipped = (value[1], value[0])  # changes from (Y, X) to (X, Y)
+            my_list.append((asset, flipped))
+        return my_list

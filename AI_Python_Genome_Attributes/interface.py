@@ -109,6 +109,20 @@ class UI_Grid:
             else:
                 child.produce_grid()
 
+    def grid_to_txt(self):
+        ind = 1
+        for child in self.children:
+            string = str(ind)
+            title = "Child_Layout_" + string + ".txt"
+            with open(title, 'w') as f:
+                my_list = ChildGenome.explore_grid(child)
+                print(my_list)
+                list_string = str(my_list)
+                for item in my_list:
+                    f.write(str(item))
+                    f.write('\n')
+                f.close()
+            ind += 1
     # Fitness Functions------------------------------------------------------
     def calc_fitness(self):
         pass
