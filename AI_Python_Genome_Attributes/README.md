@@ -31,6 +31,14 @@ Meant as a class, representing the genome for each individual UI.
     - Just returns the child's current fitness level
 - get_grid(self)
     - Returns the child's current grid
+- get_parents(self)
+    - Returns the tuple of the child's parents
+- get_item_coord(self, item)
+    - item : the asset the user wants to get the coordinate for
+    - Returns the coordinate of the specified asset
+- get_item_quad(self, item)
+    - item : the asset specified by the user
+    - Returns the quadrant loaction of the specified asset
 - max_asset(self)
     - This function just returns the child's asset with the highest value
 - curr_max(self)
@@ -52,12 +60,17 @@ Meant as a class, representing the genome for each individual UI.
 - produce_grid(self)
     - More for the initialziation, but it makes basic grids for the initial set of children
     - The function evenly places the number of elements between the four quadrants
+- merge_grid_helper(self, parent, item)
+    - parent : a ChildGenome object that's the parent of the current child
+    - item : the asset that is to be placed on the grid
 - merge_grids(self)
     - Literally just merges grids from the child's parents to make a new one 
 ## Debugging Functions
 - print_assets(self)
     - Just prints the child's current assets
     - This is more meant for beugging
+- print_assets_coord(self)
+    - Prints out the assets and their corresponding coordinates
 - check_quadrant(self, item, quad)
     - item : the item you want to check in the selected quadrant
     - quad : the quadrant you want to check

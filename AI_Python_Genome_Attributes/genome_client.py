@@ -4,7 +4,7 @@ from interface import UI_Grid
 UI_A = UI_Grid()
 UI_A.generate_initial_children()
 # print(UI_A)
-UI_A.load_assets(["C", "HB", "LOT", "FA"])
+UI_A.load_assets(["C", "HB", "LOT", "FA", "WL"])
 
 # UI_A.print_child_assets()
 
