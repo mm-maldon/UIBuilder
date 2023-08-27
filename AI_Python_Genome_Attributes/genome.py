@@ -437,11 +437,9 @@ class ChildGenome:
                         self.merge_grid_helper(parentB, item)
 
             elif item in keysA:
-                print("Helper for A")
                 self.merge_grid_helper(parentA, item)
 
             elif item in keysB:
-                print("Helper for B")
                 self.merge_grid_helper(parentB, item)
 
             else:

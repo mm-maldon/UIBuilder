@@ -196,7 +196,7 @@ class UI_Grid:
         assets = child.get_assets()
 
         for item, val in assets.items():
-            # print("curr item: ", item)
+            # print("curr item: ", item, " = ", val)
             appendVal = val
             itemQuad = child.get_item_quad(item)
             itemCoord = child.get_item_coord(item)
@@ -215,7 +215,8 @@ class UI_Grid:
             else:
                 appendVal += dist
 
-            appendVal *= itemQuad
+            appendVal *= 1 / itemQuad
+            # print(item, ": ", appendVal)
             fitness += appendVal
 
         child.set_fitness(fitness)
