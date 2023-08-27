@@ -84,9 +84,19 @@ public class UICreation : MonoBehaviour
     public void parseChild(TextAsset child){
         string allText = child.text;
         string [] lines = allText.Split(new string [] {"\r\n", "\n"}, System.StringSplitOptions.None);
-        foreach(string line in lines){
-            Debug.Log(line);
+
+        int index = 0;
+        while(index < lines.Length - 1){
+            Debug.Log(lines[index]);
+            string [] items = lines[index].Split(new string [] {","}, System.StringSplitOptions.None);
+            items[0] = items[0].Substring(1, items[0].Length - 2);
+
+            makeElement(items[0], int.Parse(items[1]), int.Parse(items[2]));
+        
+            index++;
         }
+
+        Debug.Log("out of while");
         
     }
 
