@@ -90,22 +90,24 @@ class ChildGenome:
     def mutate_assets(self):
         coinFlip = random.random()
 
-        if coinFlip <= 0.5:
-            for item, val in self.assets.items():
-                rand_val = random.randint(1, self.assets_len)
-                self.assets[item] = round((val * rand_val), 2)
+        if self.grid_len == self.assets_len:
+            if coinFlip <= 0.5:
+                for item, val in self.assets.items():
+                    rand_val = random.randint(1, self.assets_len)
+                    self.assets[item] = round((val * rand_val), 2)
         else:
-            # currInd = 0
-            tmpBool = True
-            # while (currInd < len(all_assets)) and (tmpBool):
-            while tmpBool:
-                # newItem = all_assets[currInd]
-                newItem = random.choice(all_assets)
-                if newItem not in self.assets.keys():
-                    self.assets[newItem] = 0.1
-                    self.assets_len += 1
-                    tmpBool = False
-                # currInd += 1
+            if coinFlip <= 0.5:
+                for item, val in self.assets.items():
+                    rand_val = random.randint(1, self.assets_len)
+                    self.assets[item] = round((val * rand_val), 2)
+            else:
+                tmpBool = True
+                while tmpBool:
+                    newItem = random.choice(all_assets)
+                    if newItem not in self.assets.keys() and newItem != "-":
+                        self.assets[newItem] = 0.1
+                        self.assets_len += 1
+                        tmpBool = False
 
     """
     This is meant to actually produce a new dictionary of assets depedning on the parents
@@ -175,18 +177,25 @@ class ChildGenome:
     def get_grid(self):
         return self.grid
 
+    """
+    Returns the tuple of the child's parents
+    """
+
     def get_parents(self):
         return self.parents
 
+    """
+    Returns the coordinates of the specified item, if it exists in the grid
+    """
+
     def get_item_coord(self, item):
-        # for Y in range(len(self.grid)):
-        #     for X in range(len(Y)):
-        #         if item == self.grid[Y][X]:
-        #             return (Y, X)
-        # return False
         if self.check_grid(item):
             return self.asset_locations[item]
         return False
+
+    """
+    Returns the specified items quadrant location
+    """
 
     def get_item_quad(self, item):
         quads = [1, 2, 3, 4]
@@ -212,6 +221,10 @@ class ChildGenome:
             return max_item
         else:
             return False
+
+    """
+    Returns the next item, that's not on the grid" with the highest value
+    """
 
     def curr_max(self):
         max_val = 0 - 1
@@ -338,6 +351,10 @@ class ChildGenome:
 
     # Grid Functions --------------------------------------------------------
 
+    """
+    Literally just produces a random grid for the initial pair of children
+    """
+
     def produce_grid(self):
         while self.grid_len < self.assets_len:
             amountItems = math.ceil(self.assets_len / 4)
@@ -364,14 +381,25 @@ class ChildGenome:
                 self.lower_left(amountItems)
                 self.upper_left(amountItems)
 
+    """
+    A function that was constently getting repeated in it's parent function
+    """
+
     def merge_grid_helper(self, parent, item):
-        coordA = parent.get_item_coord(item)
-        if coordA != False:
-            self.grid[coordA[0]][coordA[1]] = item
-            self.asset_locations[item] = coordA
+        itemChance = round(random.random(), 2)
+
+        if itemChance < 0.75:
+            coord = parent.get_item_coord(item)
+            self.grid[coord[0]][coord[1]] = item
+            self.asset_locations[item] = coord
+            self.grid_len += 1
         else:
             loc = parent.get_item_quad(item)
             self.place_quad(loc, item)
+
+    """
+    Creates a new grid by merging aspect from it's parents' grids
+    """
 
     def merge_grids(self):
         childAssets = self.get_assets()
@@ -428,6 +456,17 @@ class ChildGenome:
         for item, value in self.assets.items():
             print(item, " : ", value)
         print("}")
+
+    """
+    Meant to return the assets and their corresponding coordinates
+    """
+
+    def print_assets_coord(self):
+        print("{")
+        for item, value in self.asset_locations.items():
+            print(item, " : ", value)
+        print("}")
+        return
 
     """
     Meant to check for duplicate assets in a certain quadrant

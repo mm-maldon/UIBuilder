@@ -41,6 +41,9 @@ class UI_Grid:
         self.children_len = len(new_children)
         self.children = new_children
 
+    def get_children(self):
+        return self.children
+
     """
     Just an idea, but this perhaps one way we could generate children with ...
     ... the desired score of a fitness function
