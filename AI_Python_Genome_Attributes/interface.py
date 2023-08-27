@@ -119,7 +119,7 @@ class UI_Grid:
             with open(title, "w") as f:
                 # my_list = ChildGenome.explore_grid(child)
 
-                print(my_list)
+                # print(my_list)
                 # list_string = str(my_list)
                 for item in my_list:
                     f.write(str(item[0]))
@@ -169,8 +169,6 @@ class UI_Grid:
         else:
             return False
 
-        pass
-
     """
     Meant to check if a coordinate is on the edges of the screen
     Returns True if they're on the edge, False if not
@@ -188,20 +186,39 @@ class UI_Grid:
 
     """
     Calculates the fitness level of the given child
-    NOTE: We never subtract from the level, we do recipricals
+    NOTE: We never subtract constant numbers from the level, we do recipricals
     """
 
     def calc_fitness(self, child):
+        centerCoord = (7, 4)
         fitness = 0
 
         assets = child.get_assets()
 
         for item, val in assets.items():
-            appendVal = 0
+            # print("curr item: ", item)
+            appendVal = val
             itemQuad = child.get_item_quad(item)
             itemCoord = child.get_item_coord(item)
 
-        pass
+            if self.in_edges(itemCoord):
+                appendVal += 0.50
+            else:
+                appendVal += 1.50
+
+            dist = self.Dijkstra_fcn(itemCoord, centerCoord)
+            if self.in_center(itemCoord):
+                if dist > 0:
+                    appendVal -= 1 / dist
+                else:
+                    appendVal -= 1
+            else:
+                appendVal += dist
+
+            appendVal *= itemQuad
+            fitness += appendVal
+
+        child.set_fitness(fitness)
 
     # Debugging Functions ---------------------------------------------------
 

@@ -171,6 +171,13 @@ class ChildGenome:
         return self.fitness
 
     """
+    Sets the fitness to the value specified by the user
+    """
+
+    def set_fitness(self, val):
+        self.fitness = val
+
+    """
     Returns the child's current grid
     """
 
@@ -341,12 +348,11 @@ class ChildGenome:
                     return False
 
                 if self.grid[Y][X] == "-":
-                    if round(rand, 2) <= 0.75:
-                        self.grid[Y][X] = item
-                        self.asset_locations[item] = (Y, X)
-                        self.grid_len += 1
-                        # tmpBool = False
-                        return True
+                    self.grid[Y][X] = item
+                    self.asset_locations[item] = (Y, X)
+                    self.grid_len += 1
+                    # tmpBool = False
+                    return True
         return False
 
     # Grid Functions --------------------------------------------------------
@@ -390,9 +396,13 @@ class ChildGenome:
 
         if itemChance < 0.75:
             coord = parent.get_item_coord(item)
-            self.grid[coord[0]][coord[1]] = item
-            self.asset_locations[item] = coord
-            self.grid_len += 1
+            if self.grid[coord[0]][coord[1]] == "-":
+                self.grid[coord[0]][coord[1]] = item
+                self.asset_locations[item] = coord
+                self.grid_len += 1
+            else:
+                loc = parent.get_item_quad(item)
+                self.place_quad(loc, item)
         else:
             loc = parent.get_item_quad(item)
             self.place_quad(loc, item)
@@ -413,6 +423,7 @@ class ChildGenome:
         keysB = assetsB.keys()
 
         for item in childAssets.keys():
+            # print("Merge item: ", item)
             itemChance = round(random.random(), 2)
             if (item in keysA) and (item in keysB):
                 if assetsA[item] > assetsB[item]:
@@ -426,14 +437,20 @@ class ChildGenome:
                         self.merge_grid_helper(parentB, item)
 
             elif item in keysA:
+                print("Helper for A")
                 self.merge_grid_helper(parentA, item)
 
             elif item in keysB:
+                print("Helper for B")
                 self.merge_grid_helper(parentB, item)
+
+            else:
+                randLoc = random.choice([1, 2, 3, 4])
+                self.place_quad(randLoc, item)
 
     def mutate_grid(self):
         pass
-    
+
     """
     def grid_to_txt(self):
         my_list = self.explore_grid()
@@ -443,7 +460,6 @@ class ChildGenome:
                 f.write('\n')
         pass
     """
-
 
     # Debugging Functions ---------------------------------------------------
 
@@ -509,7 +525,7 @@ class ChildGenome:
                     return True
 
         return False
-    
+
     """
     Iterates through every point on the grid and returns a list containing each point
     """
