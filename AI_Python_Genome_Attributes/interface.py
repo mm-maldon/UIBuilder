@@ -116,7 +116,11 @@ class UI_Grid:
                 print(my_list)
                 list_string = str(my_list)
                 for item in my_list:
-                    f.write(str(item))
+                    f.write(str(item[0]))
+                    f.write(',')
+                    f.write(str(item[1][0]))
+                    f.write(',')
+                    f.write(str(item[1][1]))
                     f.write('\n')
                 f.close()
             ind += 1
