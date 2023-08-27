@@ -5,6 +5,7 @@ Still debating if this file should be a class or more jsut a series of functions
 
 from genome import ChildGenome
 import random
+import math
 
 width = 16
 height = 9
@@ -131,6 +132,60 @@ class UI_Grid:
             ind += 1
 
     # Fitness Functions------------------------------------------------------
+
+    """
+    Returns the distance between two points
+    """
+
+    def Dijkstra_fcn(self, coordA, coordB):
+        distance = 0
+
+        Y = coordA[0] + coordB[0]
+        X = coordA[1] + coordB[1]
+
+        XY = (X * X) + (Y * Y)
+        distance = math.sqrt(XY)
+
+        return distance
+
+    """
+    Checks if a coordinate is in the center of the grid
+    """
+
+    def in_center(self, coord):
+        X = coord[1]
+        Y = coord[0]
+
+        boolX = False
+        boolY = False
+
+        if X in range(5, 12):
+            boolX = True
+        if Y in range(4, 6):
+            boolY = True
+
+        if boolX == True and boolY == True:
+            return True
+        else:
+            return False
+
+        pass
+
+    """
+    Meant to check if a coordinate is on the edges of the screen
+    Returns True if they're on the edge, False if not
+    """
+
+    def in_edges(self, coord):
+        X = coord[1]
+        Y = coord[0]
+        if X == 0 or X == 15:
+            return True
+        if Y == 0 or Y == 8:
+            return True
+
+        return False
+
     """
     Calculates the fitness level of the given child
     NOTE: We never subtract from the level, we do recipricals
