@@ -114,15 +114,18 @@ class UI_Grid:
         for child in self.children:
             string = str(ind)
             title = "Child_Layout_" + string + ".txt"
-            with open(title, 'w') as f:
-                my_list = ChildGenome.explore_grid(child)
+            my_list = child.explore_grid()
+            with open(title, "w") as f:
+                # my_list = ChildGenome.explore_grid(child)
+
                 print(my_list)
-                list_string = str(my_list)
+                # list_string = str(my_list)
                 for item in my_list:
                     f.write(str(item))
-                    f.write('\n')
+                    f.write("\n")
                 f.close()
             ind += 1
+
     # Fitness Functions------------------------------------------------------
     def calc_fitness(self):
         pass
