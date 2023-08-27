@@ -131,7 +131,21 @@ class UI_Grid:
             ind += 1
 
     # Fitness Functions------------------------------------------------------
-    def calc_fitness(self):
+    """
+    Calculates the fitness level of the given child
+    NOTE: We never subtract from the level, we do recipricals
+    """
+
+    def calc_fitness(self, child):
+        fitness = 0
+
+        assets = child.get_assets()
+
+        for item, val in assets.items():
+            appendVal = 0
+            itemQuad = child.get_item_quad(item)
+            itemCoord = child.get_item_coord(item)
+
         pass
 
     # Debugging Functions ---------------------------------------------------
