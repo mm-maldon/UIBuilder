@@ -737,7 +737,12 @@ MonoBehaviour:
   PlayerItemPickupPrefab: {fileID: 6011783100559441399, guid: 12fc419573ee1e14ab1e3bdee686a1ea, type: 3}
   QuickInventoryPrefab: {fileID: 2310420945780782623, guid: 1cbef40c80463ef40957ed851e936012, type: 3}
   FlingAmmoPrefab: {fileID: 6674448598692569226, guid: b1065dccf66c04f4a8565aadfa6ba042, type: 3}
-  children: []
+  children:
+  - {fileID: 4900000, guid: 911dfd93b069fbb4b91e2d1ec601d701, type: 3}
+  - {fileID: 4900000, guid: 0596dc1fa4e69cd46bc963ebb2336354, type: 3}
+  - {fileID: 4900000, guid: 69c86b75d2004724dbb8887ddcb47f95, type: 3}
+  - {fileID: 4900000, guid: a0ace4a4f20586847b81fd61f39986f5, type: 3}
+  - {fileID: 4900000, guid: 874656e2584c7dc4e947630ade52299c, type: 3}
   index: 0
 --- !u!1 &1006542137
 GameObject:
