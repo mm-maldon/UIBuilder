@@ -81,9 +81,9 @@ for child in listFour:
         currInd += 1
 
 while len(listFour) < 10:
-    rand = random.choice(listOne)
+    rand = random.choice(listThree)
     if rand not in listFour:
-        listTwo.append(rand)
+        listFour.append(rand)
 
 UI_D = UI_Grid()
 UI_D.load_children(listTwo)
