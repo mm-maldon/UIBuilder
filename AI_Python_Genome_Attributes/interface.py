@@ -5,6 +5,7 @@ Still debating if this file should be a class or more jsut a series of functions
 
 from genome import ChildGenome
 import random
+import math
 
 width = 16
 height = 9
@@ -40,6 +41,9 @@ class UI_Grid:
     def load_children(self, new_children):
         self.children_len = len(new_children)
         self.children = new_children
+
+    def get_children(self):
+        return self.children
 
     """
     Just an idea, but this perhaps one way we could generate children with ...
@@ -108,25 +112,117 @@ class UI_Grid:
 
     def grid_to_txt(self):
         ind = 1
+        random.shuffle(self.children)
         for child in self.children:
             string = str(ind)
             title = "Child_Layout_" + string + ".txt"
-            with open(title, 'w') as f:
-                my_list = ChildGenome.explore_grid(child)
-                print(my_list)
-                list_string = str(my_list)
+            my_list = child.explore_grid()
+            with open(title, "w") as f:
+                # my_list = ChildGenome.explore_grid(child)
+
+                # print(my_list)
+                # list_string = str(my_list)
                 for item in my_list:
                     f.write(str(item[0]))
-                    f.write(',')
+                    f.write(",")
                     f.write(str(item[1][0]))
-                    f.write(',')
+                    f.write(",")
                     f.write(str(item[1][1]))
-                    f.write('\n')
+                    f.write("\n")
                 f.close()
             ind += 1
+            if ind >= 6:
+                break
+
     # Fitness Functions------------------------------------------------------
-    def calc_fitness(self):
-        pass
+
+    """
+    Returns the distance between two points
+    """
+
+    def Dijkstra_fcn(self, coordA, coordB):
+        distance = 0
+
+        Y = coordA[0] + coordB[0]
+        X = coordA[1] + coordB[1]
+
+        XY = (X * X) + (Y * Y)
+        distance = math.sqrt(XY)
+
+        return distance
+
+    """
+    Checks if a coordinate is in the center of the grid
+    """
+
+    def in_center(self, coord):
+        X = coord[1]
+        Y = coord[0]
+
+        boolX = False
+        boolY = False
+
+        if X in range(5, 12):
+            boolX = True
+        if Y in range(4, 6):
+            boolY = True
+
+        if boolX == True and boolY == True:
+            return True
+        else:
+            return False
+
+    """
+    Meant to check if a coordinate is on the edges of the screen
+    Returns True if they're on the edge, False if not
+    """
+
+    def in_edges(self, coord):
+        X = coord[1]
+        Y = coord[0]
+        if X == 0 or X == 15:
+            return True
+        if Y == 0 or Y == 8:
+            return True
+
+        return False
+
+    """
+    Calculates the fitness level of the given child
+    NOTE: We never subtract constant numbers from the level, we do recipricals
+    """
+
+    def calc_fitness(self, child):
+        centerCoord = (7, 4)
+        fitness = 0
+
+        assets = child.get_assets()
+
+        for item, val in assets.items():
+            # print("curr item: ", item, " = ", val)
+            appendVal = val
+            itemQuad = child.get_item_quad(item)
+            itemCoord = child.get_item_coord(item)
+
+            if self.in_edges(itemCoord):
+                appendVal += 0.50
+            else:
+                appendVal += 1.50
+
+            dist = self.Dijkstra_fcn(itemCoord, centerCoord)
+            if self.in_center(itemCoord):
+                if dist > 0:
+                    appendVal -= 1 / dist
+                else:
+                    appendVal -= 1
+            else:
+                appendVal += dist
+
+            appendVal *= 1 / itemQuad
+            # print(item, ": ", appendVal)
+            fitness += appendVal
+
+        child.set_fitness(fitness)
 
     # Debugging Functions ---------------------------------------------------
 
