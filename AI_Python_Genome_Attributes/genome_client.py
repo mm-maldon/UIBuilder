@@ -27,8 +27,14 @@ for child in UI_B.get_children():
     UI_B.calc_fitness(child)
 UI_B.grid_to_txt()
 
+favChoice = int(input("Favorite UI Template: "))
+chosenChild = UI_B.get_children()[favChoice - 1]
+
 for _ in range(3):
     """
     Your Code Here
     """
+
+
+
     pass
