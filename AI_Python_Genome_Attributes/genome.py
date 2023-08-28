@@ -91,7 +91,7 @@ class ChildGenome:
         coinFlip = random.random()
 
         if self.grid_len == self.assets_len:
-            if coinFlip <= 0.5:
+            if coinFlip <= 0.75:
                 for item, val in self.assets.items():
                     rand_val = random.randint(1, self.assets_len)
                     self.assets[item] = round((val * rand_val), 2)

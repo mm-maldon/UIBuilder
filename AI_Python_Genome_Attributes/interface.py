@@ -100,7 +100,7 @@ class UI_Grid:
         for child in self.children:
             mutateChance = round(random.random(), 2)
             # print("Percentage: ", mutateChance)
-            if mutateChance <= 0.10:
+            if mutateChance <= 0.25:
                 child.mutate_assets()
 
     def create_grids(self):
