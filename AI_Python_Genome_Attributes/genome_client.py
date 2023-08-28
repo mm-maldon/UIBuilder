@@ -75,7 +75,7 @@ listThree.sort(key=lambda x: x.get_fitness())
 
 listFour = list()
 currInd = 0
-for child in listFour:
+for child in listThree:
     if child.get_fitness() >= chosenFit and currInd < 10:
         listFour.append(child)
         currInd += 1
@@ -86,7 +86,7 @@ while len(listFour) < 10:
         listFour.append(rand)
 
 UI_D = UI_Grid()
-UI_D.load_children(listTwo)
+UI_D.load_children(listFour)
 UI_D.mutate_children()
 UI_D.create_grids()
 
@@ -102,23 +102,23 @@ chosenFit = chosenChild.get_fitness()
 Generating the last generation
 """
 
-listFive = UI_B.get_children()
+listFive = UI_D.get_children()
 listFive.sort(key=lambda x: x.get_fitness())
 
-listFive = list()
+listSix = list()
 currInd = 0
-for child in listFour:
+for child in listFive:
     if child.get_fitness() >= chosenFit and currInd < 10:
-        listFive.append(child)
+        listSix.append(child)
         currInd += 1
 
-while len(listFive) < 10:
-    rand = random.choice(listFour)
-    if rand not in listFive:
-        listFive.append(rand)
+while len(listSix) < 10:
+    rand = random.choice(listFive)
+    if rand not in listSix:
+        listSix.append(rand)
 
 UI_E = UI_Grid()
-UI_E.load_children(listTwo)
+UI_E.load_children(listSix)
 UI_E.mutate_children()
 UI_E.create_grids()
 
