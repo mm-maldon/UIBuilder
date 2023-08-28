@@ -52,6 +52,7 @@ public class UICreation : MonoBehaviour
 
     // Files
     public TextAsset [] children;
+    public int index = 0;
     
     void Start()
     {
@@ -59,18 +60,18 @@ public class UICreation : MonoBehaviour
         bgRenderer = bg.GetComponent<SpriteRenderer>();
         bgSize = bgRenderer.bounds.size;
 
-        Debug.Log("bg size: " + bgSize);
+        //Debug.Log("bg size: " + bgSize);
         X_unit = bgSize.x / 16.0f;
         Y_unit = bgSize.y / 9.0f;
 
         bgLeftCorner.x = 0.0f - bgSize.x / 2.0f;
         bgLeftCorner.y = 0.5f + bgSize.y / 2.0f;
 
-        Debug.Log("bg left corner: " + bgLeftCorner);
+        //Debug.Log("bg left corner: " + bgLeftCorner);
 
         //makeElement("HB", 16, 9);
 
-        parseChild(children[0]);                     
+        parseChild(children[index]);                     
 
     }
 
@@ -96,7 +97,7 @@ public class UICreation : MonoBehaviour
             index++;
         }
 
-        Debug.Log("out of while");
+        //Debug.Log("out of while");
         
     }
 
@@ -153,9 +154,7 @@ public class UICreation : MonoBehaviour
 
         elementRenderer = currentElement.GetComponent<SpriteRenderer>();
         elementSize = elementRenderer.bounds.size;
-        Debug.Log("element size: " + elementSize);
 
-        Debug.Log("old position: " + currentElement.transform.position);
         Vector3 tempElementPos = currentElement.transform.position;
 
         if(x <= 7){
@@ -171,6 +170,36 @@ public class UICreation : MonoBehaviour
         }
 
         currentElement.transform.position = tempElementPos;
-        Debug.Log("new position: " + currentElement.transform.position);
     }
+
+    public void AdvanceUI(){
+        GameObject [] oldUI = GameObject.FindGameObjectsWithTag("UIElement");
+        foreach(GameObject element in oldUI){
+            GameObject.Destroy(element);
+        }
+
+        if(index == children.Length - 1){
+            index = 0;
+        }else{
+            index++;
+        }
+
+        parseChild(children[index]);
+    }
+
+    public void RevertUI(){
+        GameObject [] oldUI = GameObject.FindGameObjectsWithTag("UIElement");
+        foreach(GameObject element in oldUI){
+            GameObject.Destroy(element);
+        } 
+
+        if(index == 0){
+            index = children.Length - 1;
+        }else{
+            index--;
+        }
+
+        parseChild(children[index]);
+    }
+
 }
