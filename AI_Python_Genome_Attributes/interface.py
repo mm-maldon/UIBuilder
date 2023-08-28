@@ -112,6 +112,7 @@ class UI_Grid:
 
     def grid_to_txt(self):
         ind = 1
+        random.shuffle(self.children)
         for child in self.children:
             string = str(ind)
             title = "Child_Layout_" + string + ".txt"
@@ -130,6 +131,8 @@ class UI_Grid:
                     f.write("\n")
                 f.close()
             ind += 1
+            if ind >= 6:
+                break
 
     # Fitness Functions------------------------------------------------------
 
