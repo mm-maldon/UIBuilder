@@ -17,7 +17,7 @@ public class LabelScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        labelText.text = "UI #" + ui.index;
+        labelText.text = "UI #" + (ui.index + 1);
         
     }
 }

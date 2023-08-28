@@ -90,7 +90,6 @@ public class UICreation : MonoBehaviour
         while(index < lines.Length - 1){
             Debug.Log(lines[index]);
             string [] items = lines[index].Split(new string [] {","}, System.StringSplitOptions.None);
-            items[0] = items[0].Substring(1, items[0].Length - 2);
 
             makeElement(items[0], int.Parse(items[1]), int.Parse(items[2]));
         
